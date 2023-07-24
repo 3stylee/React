@@ -1,8 +1,9 @@
 import React from "react";
 import messages from "../messages-utils";
+import { Typography } from "@mui/material";
 
 const GameMessage = props => (
-    <p>{messages[props.status]}</p>
+    <Typography component="p" mt={1}>{messages[props.status]}</Typography>
 );
 
 export default GameMessage;

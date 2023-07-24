@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import utils from "../math-utils";
-import Cell from "./Cell";
 import GameMessage from "./GameMessage";
 import GameButton from "./GameButton";
+import { Typography } from "@mui/material";
+import CellGrid from "./CellGrid";
+import { BoxSizeReset, Button, Footer, GameContainer, Message, Timer } from "./StyledComponents";
 
 const useGameState = () => {
     const [gameStatus, setGameStatus] = useState('not-active');
@@ -61,36 +63,31 @@ const Game = props => {
     }
 
     const cellStatus = key => {
-        if (gameStatus === 'starting' && correctCells.includes(key)) { return 'preview' }
+        if ((gameStatus === 'starting' || gameStatus === 'lost') 
+        && correctCells.includes(key)) { return 'preview' }
+
         if (!(chosenCells.includes(key))) { return 'available'; }
         if (correctCells.includes(key)) { return 'correct'; }
         if (!(correctCells.includes(key))) { return 'wrong'; }
     }
 
     return (
-      <div className="game">
-        <div className="grid">
-            { utils.createArray(25).map(cell => (
-            <Cell 
-                key={cell}
-                number={cell} 
-                onClick={onCellClick} 
-                status={cellStatus(cell)}
-            /> 
-            ))}
-        </div>
-        <div className="footer">
-            <div className="message">
-                <GameMessage status={gameStatus}/>
-            </div>
-            <div className="timer">
-                <p>Time left:{timeLeft}</p>
-            </div>
-            <div className="button">
-                <GameButton gameStatus={gameStatus} startGame={startGame} playAgain={props.startNewGame}/>
-            </div>
-        </div>
-      </div>
+        <BoxSizeReset>
+            <GameContainer>
+                <CellGrid cellStatus={cellStatus} onCellClick={onCellClick}/>
+                <Footer>
+                    <Message>
+                        <GameMessage status={gameStatus}/>
+                    </Message>
+                    <Timer>
+                        <Typography component="p" mt={1.5}>Time left: {timeLeft}s</Typography>
+                    </Timer>
+                    <Button>
+                        <GameButton gameStatus={gameStatus} startGame={startGame} playAgain={props.startNewGame}/>
+                    </Button>
+                </Footer>
+            </GameContainer>
+        </BoxSizeReset>
     );
   };
 
