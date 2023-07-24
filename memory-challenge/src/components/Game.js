@@ -1,6 +1,7 @@
 import { useState } from "react";
 import utils from "../math-utils";
 import Cell from "./Cell";
+import GameMessage from "./GameMessage";
 
 const useGameState = () => {
     const [gameStatus, setGameStatus] = useState('not-active');
@@ -58,7 +59,9 @@ const Game = () => {
             /> 
             ))}
         </div>
-        <div className="message"></div>
+        <div className="message">
+            <GameMessage status={gameStatus}/>
+        </div>
         <div className="button">
           <button onClick={startGame}>Start Game</button>
         </div>
