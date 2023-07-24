@@ -1,5 +1,5 @@
 const messages = {
-    'not-activive': '',
+    'not-active': '',
     'won': 'Congratulations you won!',
     'lost': 'Unlucky, you lost'
 }

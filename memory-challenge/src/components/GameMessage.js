@@ -2,7 +2,7 @@ import React from "react";
 import messages from "../messages-utils";
 
 const GameMessage = props => (
-    <h1>{messages[props.status]}</h1>
+    <p>{messages[props.status]}</p>
 );
 
 export default GameMessage;

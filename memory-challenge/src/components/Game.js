@@ -1,12 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import utils from "../math-utils";
 import Cell from "./Cell";
 import GameMessage from "./GameMessage";
+import GameButton from "./GameButton";
 
 const useGameState = () => {
     const [gameStatus, setGameStatus] = useState('not-active');
     const [chosenCells, setChosenCells] = useState([]);
-    const [correctCells] = useState(utils.sampleArray(utils.createArray(9), 3));
+    const [correctCells] = useState(utils.sampleArray(utils.createArray(25), 5));
+    const [timeLeft, setTimeLeft] = useState(10);
+
+    useEffect(() => {
+        let timerId;
+        if (gameStatus === 'starting'){
+            timerId = setTimeout(() => {
+                setGameStatus('active');
+            }, 3000);
+        }
+        if (gameStatus === 'active'){
+            timerId = setTimeout(() => {
+                if (timeLeft === 1){
+                    clearTimeout(timerId);
+                    setGameStatus('lost');
+                }
+                setTimeLeft(timeLeft - 1);
+            }, 1000);
+        }
+        return () => clearTimeout(timerId);
+    }, [timeLeft, gameStatus]);
 
     const setGameState = newChosenCells => {
         const [includeCount, excludeCount] = utils.arrayCrossCounts(newChosenCells, correctCells);
@@ -21,15 +42,14 @@ const useGameState = () => {
         setChosenCells(newChosenCells);
     }
 
-    return {correctCells, chosenCells, gameStatus, setGameState, setGameStatus};
+    return {correctCells, chosenCells, gameStatus, timeLeft, setGameState, setGameStatus};
 }
 
-const Game = () => {
-    const {correctCells, chosenCells, gameStatus, setGameState, setGameStatus} = useGameState();
+const Game = props => {
+    const {correctCells, chosenCells, gameStatus, timeLeft, setGameState, setGameStatus} = useGameState();
 
     const startGame = () => {
         setGameStatus('starting');
-        setTimeout(() => {setGameStatus('active')}, 3000);
     }
 
     const onCellClick = (key, currentStatus) => {
@@ -50,7 +70,7 @@ const Game = () => {
     return (
       <div className="game">
         <div className="grid">
-            { utils.createArray(9).map(cell => (
+            { utils.createArray(25).map(cell => (
             <Cell 
                 key={cell}
                 number={cell} 
@@ -59,11 +79,16 @@ const Game = () => {
             /> 
             ))}
         </div>
-        <div className="message">
-            <GameMessage status={gameStatus}/>
-        </div>
-        <div className="button">
-          <button onClick={startGame}>Start Game</button>
+        <div className="footer">
+            <div className="message">
+                <GameMessage status={gameStatus}/>
+            </div>
+            <div className="timer">
+                <p>Time left:{timeLeft}</p>
+            </div>
+            <div className="button">
+                <GameButton gameStatus={gameStatus} startGame={startGame} playAgain={props.startNewGame}/>
+            </div>
         </div>
       </div>
     );
