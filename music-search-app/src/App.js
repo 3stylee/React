@@ -1,10 +1,13 @@
 import { ThemeProvider, createTheme } from "@mui/material";
 import MusicSearch from "./Components/MusicSearch";
-import { red } from "@mui/material/colors";
+import { blue } from "@mui/material/colors";
 
 const theme = createTheme({
   palette: {
-    primary: red
+    primary: blue,
+    secondary: {
+      main: '#e3f2fd'
+    },
   },
   typography: {
     fontFamily: 'Arial'

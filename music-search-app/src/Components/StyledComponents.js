@@ -1,23 +1,45 @@
 import styled from "@emotion/styled";
-import { Box } from "@mui/material";
-import { blue } from "@mui/material/colors";
+import { Box, Button, Card, TextField } from "@mui/material";
 
-const CenteredBox = styled(Box)({
-    textAlign: 'center',
-    padding: '2rem'
-})
-
-const AppContainer = styled(Box)({
-    backgroundColor: blue[400],
-    borderRadius: '2rem',
+const AppContainer = styled(Card)((props) => ({
+    borderRadius: '1rem',
     height: '80vh',
-    marginTop: '1rem'
-})
+    paddingTop: '1.6rem',
+    backgroundColor: props.color,
+}));
 
 const TitleBanner = styled(Box)({
     borderBottom: '2px solid black',
     padding: '0.5rem',
-    textAlign: 'center'
+    marginTop: '0.5rem',
+    textAlign: 'center',
+    boxSizing: 'border-box'
 })
 
-export { CenteredBox, AppContainer, TitleBanner }
+const ContentDisplay = styled(Box)({
+    margin: '1.5rem',
+    textAlign: 'center',
+    overflow: 'auto',
+    borderRadius: '1rem'
+})
+
+const SearchButton = styled(Button)({
+    height: '3.5rem',
+    borderTopLeftRadius: '0',
+    borderBottomLeftRadius: '0'
+})
+
+const SearchInput = styled(TextField)({
+    width: 'calc(100% - 4rem)',
+})
+
+const SearchBar = styled(Box)({
+    marginBottom: '0.5rem'
+})
+
+const ICard = styled(Card)((props) => ({
+    marginBottom: '1rem',
+    backgroundColor: props.color
+}))
+
+export { AppContainer, TitleBanner, ContentDisplay, SearchButton, SearchInput, SearchBar, ICard }
