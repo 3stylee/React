@@ -7,7 +7,6 @@ import { loadResults } from '../redux/actions/resultsActions';
 import { updatePage } from '../redux/actions/pageActions';
 import { connect } from 'react-redux';
 import { PAGE_SIZE } from '../constants';
-import { useInfiniteQuery } from 'react-query';
 
 const useMusicSearch = () => {
 	const [searchText, setSearchText] = useState('');
@@ -46,22 +45,6 @@ const useMusicSearch = () => {
 
 const MusicSearch = ({ results, loading, page, loadResults, updatePage }) => {
 	const theme = useTheme();
-
-	// const fetchResults = async ({ offset = 0 }) => {
-	// 	await loadResults(constructURL(PAGE_SIZE, offset));
-	// };
-
-	// const {
-	// 	error,
-	// 	fetchNextPage,
-	// 	hasNextPage,
-	// 	isFetching,
-	// 	isFetchingNextPage,
-	// 	status,
-	// } = useInfiniteQuery({
-	// 	queryKey: ['results'],
-	// 	queryFn: fetchResults,
-	// });
 
 	const { searchText, filters, onSwitchChanged, onSearchChanged } =
 		useMusicSearch();
@@ -130,15 +113,6 @@ const MusicSearch = ({ results, loading, page, loadResults, updatePage }) => {
 							constructURL={constructURL}
 							initial={page === 0} // to avoid showing 'no results found' on initial load
 						/>
-						{/* <button
-							onClick={() => fetchNextPage(page * PAGE_SIZE)}
-							disabled={!hasNextPage || isFetchingNextPage}>
-							{isFetchingNextPage
-								? 'Loading more...'
-								: hasNextPage
-								? 'Load More'
-								: 'Nothing more to load'}
-						</button> */}
 					</ContentDisplay>
 				</AppContainer>
 			</Container>

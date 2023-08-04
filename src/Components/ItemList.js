@@ -4,6 +4,9 @@ import { Typography, Box, Grid, CircularProgress } from '@mui/material';
 import ItemCard from './ItemCard';
 
 const ItemList = props => {
+	if (props.initial) {
+		return;
+	}
 	if (props.loading) {
 		return <CircularProgress color="inherit" />;
 	}
@@ -23,9 +26,6 @@ const ItemList = props => {
 			</>
 		);
 	} else {
-		if (props.initial) {
-			return;
-		}
 		return (
 			<Typography variant="h5" component="h5">
 				Sorry, no results found

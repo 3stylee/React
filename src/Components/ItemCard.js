@@ -6,7 +6,7 @@ import { useTheme } from '@emotion/react';
 const ItemCard = props => {
 	const theme = useTheme();
 	return (
-		<StyledCard color={theme.palette.secondary.main}>
+		<StyledCard color={'#e3f2fd'}>
 			<CardHeader
 				title={
 					props.data.wrapperType !== 'artist'
