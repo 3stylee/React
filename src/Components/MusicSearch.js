@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { AppContainer, ContentDisplay, TitleBanner } from './StyledComponents';
 import SearchForm from './SearchForm';
 import ItemList from './ItemList';
-import { Typography, Box, Container, useTheme } from '@mui/material';
+import { Typography, Box, Container, useTheme, Button } from '@mui/material';
 import { loadResults } from '../redux/actions/resultsActions';
-import { updatePage } from '../redux/actions/pageActions';
 import { connect } from 'react-redux';
 import { PAGE_SIZE } from '../constants';
 import { useInfiniteQuery } from 'react-query';
 
 const useMusicSearch = () => {
 	const [searchText, setSearchText] = useState('');
+	const [initial, setInitial] = useState(true);
 	const [filters, setFilters] = useState({
 		Songs: true,
 		Artists: true,
@@ -39,32 +39,41 @@ const useMusicSearch = () => {
 	return {
 		searchText,
 		filters,
+		initial,
 		onSwitchChanged,
 		onSearchChanged,
+		setInitial,
 	};
 };
 
-const MusicSearch = ({ results, loading, page, loadResults, updatePage }) => {
+const MusicSearch = ({ results, loading, loadResults }) => {
 	const theme = useTheme();
 
-	// const fetchResults = async ({ offset = 0 }) => {
-	// 	await loadResults(constructURL(PAGE_SIZE, offset));
-	// };
+	const fetchResults = async ({ offset = 0 }) => {
+		console.log(constructURL(PAGE_SIZE, offset));
+		try {
+			await loadResults(constructURL(PAGE_SIZE, offset));
+			return results;
+		} catch (e) {
+			throw e;
+		}
+	};
 
-	// const {
-	// 	error,
-	// 	fetchNextPage,
-	// 	hasNextPage,
-	// 	isFetching,
-	// 	isFetchingNextPage,
-	// 	status,
-	// } = useInfiniteQuery({
-	// 	queryKey: ['results'],
-	// 	queryFn: fetchResults,
-	// });
+	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+		useInfiniteQuery({
+			queryKey: ['results'],
+			queryFn: fetchResults,
+			getNextPageParam: () => 12,
+		});
 
-	const { searchText, filters, onSwitchChanged, onSearchChanged } =
-		useMusicSearch();
+	const {
+		searchText,
+		filters,
+		initial,
+		onSwitchChanged,
+		onSearchChanged,
+		setInitial,
+	} = useMusicSearch();
 
 	const baseURL = 'https://itunes.apple.com/search?term=';
 
@@ -83,11 +92,10 @@ const MusicSearch = ({ results, loading, page, loadResults, updatePage }) => {
 	};
 
 	const onButtonClick = async () => {
-		loadResults(constructURL(PAGE_SIZE))
-			.then(updatePage(1))
-			.catch(error => {
-				alert('Failed to load results ' + error);
-			});
+		loadResults(constructURL(PAGE_SIZE)).catch(error => {
+			alert('Failed to load results ' + error);
+		});
+		setInitial(false);
 	};
 
 	const getFilterString = () => {
@@ -125,20 +133,21 @@ const MusicSearch = ({ results, loading, page, loadResults, updatePage }) => {
 					/>
 					<ContentDisplay>
 						<ItemList
-							results={results}
+							results={initial ? results : data.pages}
 							loading={loading}
 							constructURL={constructURL}
-							initial={page === 0} // to avoid showing 'no results found' on initial load
+							initial={initial} // to avoid showing 'no results found' on initial load
 						/>
-						{/* <button
-							onClick={() => fetchNextPage(page * PAGE_SIZE)}
+						<Button
+							onClick={() => fetchNextPage()}
+							color="secondary"
 							disabled={!hasNextPage || isFetchingNextPage}>
 							{isFetchingNextPage
 								? 'Loading more...'
 								: hasNextPage
 								? 'Load More'
 								: 'Nothing more to load'}
-						</button> */}
+						</Button>
 					</ContentDisplay>
 				</AppContainer>
 			</Container>
@@ -150,13 +159,11 @@ const mapStateToProps = state => {
 	return {
 		results: state.results,
 		loading: state.apiCallsInProgress > 0,
-		page: state.page,
 	};
 };
 
 const mapDispatchToProps = {
 	loadResults,
-	updatePage,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MusicSearch);
