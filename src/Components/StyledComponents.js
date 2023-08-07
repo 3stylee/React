@@ -33,6 +33,8 @@ const ContentDisplay = styled(Box)({
 	margin: '1.5rem',
 	textAlign: 'center',
 	borderRadius: '1rem',
+	maxHeight: '60vh',
+	overflowY: 'auto',
 });
 
 const SearchButton = styled(Button)({

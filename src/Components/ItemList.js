@@ -1,6 +1,5 @@
 import React from 'react';
-import Pagination from './Pagination';
-import { Typography, Box, Grid, CircularProgress } from '@mui/material';
+import { Typography, Grid, CircularProgress } from '@mui/material';
 import ItemCard from './ItemCard';
 
 const ItemList = props => {
@@ -10,7 +9,7 @@ const ItemList = props => {
 	if (props.loading) {
 		return <CircularProgress color="inherit" />;
 	}
-	if (props.results.length > 0) {
+	if (props.results[0].length > 0) {
 		return (
 			<>
 				<Grid container spacing={2}>
