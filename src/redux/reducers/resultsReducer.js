@@ -3,8 +3,10 @@ import initalState from '../initalState';
 
 const resultsReducer = (state = initalState.results, action) => {
 	switch (action.type) {
+		case types.CLEAR_RESULTS:
+			return [];
 		case types.LOAD_RESULTS_SUCCESS:
-			return action.results;
+			return [...state, ...action.results];
 		default:
 			return state;
 	}

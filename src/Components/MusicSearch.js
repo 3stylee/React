@@ -3,7 +3,7 @@ import { AppContainer, ContentDisplay, TitleBanner } from './StyledComponents';
 import SearchForm from './SearchForm';
 import ItemList from './ItemList';
 import { Typography, Box, Container, useTheme } from '@mui/material';
-import { loadResults } from '../redux/actions/resultsActions';
+import { loadResults, clearResults } from '../redux/actions/resultsActions';
 import { updatePage } from '../redux/actions/pageActions';
 import { connect } from 'react-redux';
 import { PAGE_SIZE } from '../constants';
@@ -43,7 +43,14 @@ const useMusicSearch = () => {
 	};
 };
 
-const MusicSearch = ({ results, loading, page, loadResults, updatePage }) => {
+const MusicSearch = ({
+	results,
+	loading,
+	page,
+	loadResults,
+	updatePage,
+	clearResults,
+}) => {
 	const theme = useTheme();
 
 	const { searchText, filters, onSwitchChanged, onSearchChanged } =
@@ -66,8 +73,17 @@ const MusicSearch = ({ results, loading, page, loadResults, updatePage }) => {
 	};
 
 	const onButtonClick = async () => {
-		loadResults(constructURL(PAGE_SIZE))
+		clearResults();
+		await loadResults(constructURL(PAGE_SIZE))
 			.then(updatePage(1))
+			.catch(error => {
+				alert('Failed to load results ' + error);
+			});
+	};
+
+	const onLoadMore = async () => {
+		await loadResults(constructURL(PAGE_SIZE, PAGE_SIZE * page))
+			.then(updatePage(page + 1))
 			.catch(error => {
 				alert('Failed to load results ' + error);
 			});
@@ -109,6 +125,7 @@ const MusicSearch = ({ results, loading, page, loadResults, updatePage }) => {
 					<ContentDisplay>
 						<ItemList
 							results={results}
+							onLoadMore={onLoadMore}
 							loading={loading}
 							constructURL={constructURL}
 							initial={page === 0} // to avoid showing 'no results found' on initial load
@@ -130,6 +147,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
 	loadResults,
+	clearResults,
 	updatePage,
 };
 

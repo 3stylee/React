@@ -6,6 +6,7 @@ import {
 	CardContent,
 	CardMedia,
 	TextField,
+	Grid,
 } from '@mui/material';
 
 const AppContainer = styled(Card)(props => ({
@@ -33,6 +34,8 @@ const ContentDisplay = styled(Box)({
 	margin: '1.5rem',
 	textAlign: 'center',
 	borderRadius: '1rem',
+	maxHeight: '60vh',
+	overflowY: 'auto',
 });
 
 const SearchButton = styled(Button)({
@@ -67,6 +70,10 @@ const MusicThumbnail = styled(CardMedia)({
 	width: '130px',
 });
 
+const StyledGrid = styled(Grid)({
+	marginBottom: '1rem',
+});
+
 export {
 	AppContainer,
 	TitleBanner,
@@ -77,4 +84,5 @@ export {
 	StyledCard,
 	StyledCardContent,
 	MusicThumbnail,
+	StyledGrid,
 };

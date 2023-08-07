@@ -6,6 +6,10 @@ export const loadResultsSuccess = results => {
 	return { type: types.LOAD_RESULTS_SUCCESS, results };
 };
 
+export const clearResults = () => {
+	return { type: types.CLEAR_RESULTS };
+};
+
 export const loadResults = url => {
 	return async function (dispatch) {
 		dispatch(beginApiCall());
