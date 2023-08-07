@@ -15,7 +15,7 @@ const ItemList = props => {
 			<>
 				<Grid container spacing={2}>
 					{props.results.map((item, index) => (
-						<Grid item xs={3} key={index}>
+						<Grid item xs={12} sm={6} md={4} lg={3} key={index}>
 							<ItemCard data={item} />
 						</Grid>
 					))}

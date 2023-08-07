@@ -1,10 +1,12 @@
 import React from 'react';
-import { CardHeader, CardContent, Typography } from '@mui/material';
-import { StyledCard } from './StyledComponents';
-import { useTheme } from '@emotion/react';
+import { CardHeader, Typography } from '@mui/material';
+import {
+	StyledCard,
+	StyledCardContent,
+	MusicThumbnail,
+} from './StyledComponents';
 
 const ItemCard = props => {
-	const theme = useTheme();
 	return (
 		<StyledCard color={'#e3f2fd'}>
 			<CardHeader
@@ -14,14 +16,20 @@ const ItemCard = props => {
 						: props.data.artistName
 				}
 			/>
-			<CardContent>
-				<Typography variant="body2" color="text.secondary">
+			<StyledCardContent>
+				<Typography component="p" color="text.secondary">
 					Artist: {props.data.artistName}, Media Type:{' '}
 					{props.data.wrapperType === 'collection'
 						? 'album'
 						: props.data.wrapperType}
 				</Typography>
-			</CardContent>
+			</StyledCardContent>
+			<MusicThumbnail
+				component="img"
+				image={
+					props.data.artworkUrl100 || 'https://placehold.co/130x130'
+				}
+			/>
 		</StyledCard>
 	);
 };

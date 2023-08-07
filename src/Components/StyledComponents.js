@@ -1,5 +1,12 @@
 import styled from '@emotion/styled';
-import { Box, Button, Card, TextField } from '@mui/material';
+import {
+	Box,
+	Button,
+	Card,
+	CardContent,
+	CardMedia,
+	TextField,
+} from '@mui/material';
 
 const AppContainer = styled(Card)(props => ({
 	borderRadius: '1rem',
@@ -46,8 +53,19 @@ const SearchBar = styled(Box)({
 const StyledCard = styled(Card)(props => ({
 	marginBottom: '0.2rem',
 	backgroundColor: props.color,
-	height: '9rem',
+	height: '8.1rem',
+	display: 'flex',
 }));
+
+const StyledCardContent = styled(CardContent)({
+	display: 'flex',
+	alignItems: 'center',
+});
+
+const MusicThumbnail = styled(CardMedia)({
+	height: '130px',
+	width: '130px',
+});
 
 export {
 	AppContainer,
@@ -57,4 +75,6 @@ export {
 	SearchInput,
 	SearchBar,
 	StyledCard,
+	StyledCardContent,
+	MusicThumbnail,
 };
